@@ -87,7 +87,7 @@ var grayscaleCmd = &cobra.Command{
 			fmt.Println("Please try again and specify the output using -o flag")
 			return
 		}
-		outputFileExtension := getFileExtension(output)
+		outputFileExtension := getFileExtensionFileName(output)
 		if outputFileExtension == "" {
 			fmt.Println("Please add an extension to your output filename e.g img.jpeg")
 			return
@@ -118,8 +118,8 @@ var grayscaleCmd = &cobra.Command{
 	},
 }
 
-// getFileExtension returns a file extension from the file name.
-func getFileExtension(filename string) string {
+// getFileExtensionFileName returns a file extension from the file name.
+func getFileExtensionFileName(filename string) string {
 	splittedStr := strings.Split(filename, ".")
 	return splittedStr[len(splittedStr)-1]
 }
