@@ -7,6 +7,8 @@ import (
 // GrayToolkit is the interface that describes a gray manipulation
 // toolkit object.
 type GrayToolkit interface {
+	// AddEffect adds a gray effect to the image and returns the new image
+	// that has the gray effect.
 	AddEffect() image.Image
 }
 
