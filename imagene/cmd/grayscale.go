@@ -67,8 +67,8 @@ var grayscaleCmd = &cobra.Command{
 
 		case url != "" && local == "":
 			resp, err := http.Get(url)
-			if err != nil {
-				fmt.Println("An error occured: ", err)
+			if err != nil || resp.StatusCode != http.StatusOK {
+				fmt.Println("The image url provided is invalid !")
 				return
 			}
 			defer resp.Body.Close()
