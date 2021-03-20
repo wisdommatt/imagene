@@ -4,8 +4,12 @@ import (
 	"bytes"
 	"errors"
 	"image"
+	"image/jpeg"
+	"image/png"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"strings"
 )
 
 // Reader is the interface that describes an image
@@ -17,7 +21,9 @@ type Reader interface {
 
 // Writer is the interface that describes an image
 // writer object.
-type Writer interface{}
+type Writer interface {
+	WriteToFile(file *os.File, image image.Image, output string) error
+}
 
 // ReadWriter is the interface that groups the
 // image Reader and Writer interfaces.
@@ -79,4 +85,34 @@ func (reader) ReadFromLocalPath(localPath string) (img image.Image, err error) {
 	}
 	img, _, err = image.Decode(bytes.NewBuffer(file))
 	return
+}
+
+// WriteToFile writes an image contents to a file on disk.
+func (writer) WriteToFile(file *os.File, image image.Image, output string) error {
+	outputFile, err := os.Create(output)
+	if err != nil {
+		return err
+	}
+	defer outputFile.Close()
+
+	fileExtension := getFileExtensionFromFileName(output)
+	switch {
+	// saving the file using png.Encode if fileExtension is png.
+	case fileExtension == "png":
+		return png.Encode(file, image)
+
+		// saving the file using jpeg.Encode if fileExtension is jpg or jpeg.
+	case fileExtension == "jpg" || fileExtension == "jpeg":
+		return jpeg.Encode(file, image, nil)
+
+		// returning an unsupported file type error if file type is not (png, jpg, jpeg).
+	default:
+		return errors.New(fileExtension + " output file type is not supported")
+	}
+}
+
+// getFileExtensionFromFileName returns a file extension from the file name.
+func getFileExtensionFromFileName(filename string) string {
+	splittedStr := strings.Split(filename, ".")
+	return splittedStr[len(splittedStr)-1]
 }
