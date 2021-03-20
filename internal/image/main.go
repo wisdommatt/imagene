@@ -17,6 +17,7 @@ import (
 type Reader interface {
 	ReadFromURL(url string) (img image.Image, err error)
 	ReadFromLocalPath(localPath string) (img image.Image, err error)
+	GetImageFromURLorLocalPath(url, localPath string) (img image.Image, err error)
 }
 
 // Writer is the interface that describes an image
@@ -34,8 +35,7 @@ type ReadWriter interface {
 
 // reader is the object that satisfies the Reader
 // interface.
-type reader struct {
-}
+type reader struct{}
 
 // writer is the object that satisfies the Writer interface.
 type writer struct{}
@@ -109,6 +109,20 @@ func (writer) WriteToFile(file *os.File, image image.Image, output string) error
 	default:
 		return errors.New(fileExtension + " output file type is not supported")
 	}
+}
+
+// GetImageFromURLorLocalPath returns an image from the url if url is not
+// empty or returns an image from the local path if localPath is not empty
+// and url is empty.
+func (reader reader) GetImageFromURLorLocalPath(url, localPath string) (img image.Image, err error) {
+	switch {
+	case url != "":
+		return reader.ReadFromURL(url)
+
+	case localPath != "":
+		return reader.ReadFromLocalPath(localPath)
+	}
+	return nil, errors.New("Both url and local path was not provided")
 }
 
 // getFileExtensionFromFileName returns a file extension from the file name.
