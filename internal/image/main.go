@@ -23,7 +23,7 @@ type Reader interface {
 // Writer is the interface that describes an image
 // writer object.
 type Writer interface {
-	WriteToFile(file *os.File, image image.Image, output string) error
+	WriteToFile(image image.Image, output string) error
 }
 
 // ReadWriter is the interface that groups the
@@ -88,12 +88,12 @@ func (reader) ReadFromLocalPath(localPath string) (img image.Image, err error) {
 }
 
 // WriteToFile writes an image contents to a file on disk.
-func (writer) WriteToFile(file *os.File, image image.Image, output string) error {
-	outputFile, err := os.Create(output)
+func (writer) WriteToFile(image image.Image, output string) error {
+	file, err := os.Create(output)
 	if err != nil {
 		return err
 	}
-	defer outputFile.Close()
+	defer file.Close()
 
 	fileExtension := getFileExtensionFromFileName(output)
 	switch {
