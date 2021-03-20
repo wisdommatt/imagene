@@ -2,7 +2,6 @@
 
 A Golang package and cli tool for image manipulation.
 
-
 # Installation
 
 ---
@@ -16,7 +15,7 @@ go get -u github.com/wisdommatt/imagene
 * To install the cli tool run
 
 ```bash
-go get -u github.com/wisdommatt/imagene/imagene
+go get -u github.com/wisdommatt/imagene/cmd/cli/imagene
 ```
 
 # Usage
@@ -35,7 +34,6 @@ go get -u github.com/wisdommatt/imagene/imagene
 ```bash
 imagene grayscale --url=https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg --output=url-image-gray.jpg
 ```
-
 
 # Documentation
 
