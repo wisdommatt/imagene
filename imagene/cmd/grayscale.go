@@ -28,8 +28,9 @@ import (
 	"os"
 	"strings"
 
+	imagene "github.com/wisdommatt/imagene/internal/grayscale"
+
 	"github.com/spf13/cobra"
-	"github.com/wisdommatt/imagene"
 )
 
 // grayscaleCmd represents the grayscale command
@@ -37,7 +38,7 @@ var grayscaleCmd = &cobra.Command{
 	Use:   "grayscale",
 	Short: "Converts an image to grayscale",
 	Run: func(cmd *cobra.Command, args []string) {
-		var grayToolkit imagene.GrayToolkit
+		var grayToolkit imagene.Toolkit
 		var imageFile image.Image
 		var err error
 		local, _ := cmd.Flags().GetString("local")
@@ -53,7 +54,7 @@ var grayscaleCmd = &cobra.Command{
 			return
 		}
 		// Initializing the gray toolkit with the imageFile.
-		grayToolkit = imagene.NewGrayToolkit(imageFile)
+		grayToolkit = imagene.NewToolkit(imageFile)
 		imageFile = grayToolkit.AddEffect()
 		// Getting the output path of the processed image from the --output
 		// flag.
