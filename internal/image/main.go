@@ -81,7 +81,7 @@ func (reader) ReadFromURL(url string) (img image.Image, err error) {
 func (reader) ReadFromLocalPath(localPath string) (img image.Image, err error) {
 	file, err := ioutil.ReadFile(localPath)
 	if err != nil {
-		return nil, errors.New("The provided local image path in invalid")
+		return nil, errors.New("The provided local image path is invalid")
 	}
 	img, _, err = image.Decode(bytes.NewBuffer(file))
 	return

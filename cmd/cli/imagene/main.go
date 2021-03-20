@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/wisdommatt/imagene/imagene/cmd"
+import "github.com/wisdommatt/imagene/cmd/cli/imagene/cmd"
 
 func main() {
 	cmd.Execute()
