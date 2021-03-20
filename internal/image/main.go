@@ -1,8 +1,10 @@
 package image
 
 import (
+	"bytes"
 	"errors"
 	"image"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -10,6 +12,7 @@ import (
 // reader object.
 type Reader interface {
 	ReadFromURL(url string) (img image.Image, err error)
+	ReadFromLocalPath(localPath string) (img image.Image, err error)
 }
 
 // Writer is the interface that describes an image
@@ -56,7 +59,7 @@ func NewReadWriter() ReadWriter {
 	return readWriter{}
 }
 
-// ReadFromURL reads an image from the url.
+// ReadFromURL reads and return an image from the url.
 func (reader) ReadFromURL(url string) (img image.Image, err error) {
 	resp, err := http.Get(url)
 	if err != nil || resp.StatusCode != http.StatusOK {
@@ -64,5 +67,16 @@ func (reader) ReadFromURL(url string) (img image.Image, err error) {
 	}
 	defer resp.Body.Close()
 	img, _, err = image.Decode(resp.Body)
+	return
+}
+
+// ReadFromLocalPath reads and return an image from a local
+// directory file path.
+func (reader) ReadFromLocalPath(localPath string) (img image.Image, err error) {
+	file, err := ioutil.ReadFile(localPath)
+	if err != nil {
+		return nil, errors.New("The provided local image path in invalid")
+	}
+	img, _, err = image.Decode(bytes.NewBuffer(file))
 	return
 }
