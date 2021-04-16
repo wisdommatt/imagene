@@ -13,15 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package cli
 
 import (
 	"fmt"
 	_ "image/jpeg"
 
-	img "github.com/wisdommatt/imagene/internal/image"
-
-	imagene "github.com/wisdommatt/imagene/internal/grayscale"
+	img "github.com/wisdommatt/imagene/internal/img"
 
 	"github.com/spf13/cobra"
 )
@@ -50,7 +48,7 @@ var grayscaleCmd = &cobra.Command{
 			return
 		}
 		// Initializing the gray toolkit with the imageFile.
-		grayToolkit := imagene.NewToolkit(imageFile)
+		grayToolkit := img.NewGrayToolkit(imageFile)
 		imageFile = grayToolkit.AddEffect()
 		// Saving the image file to a file to disk.
 		err = imageReadWriter.WriteToFile(imageFile, output)
